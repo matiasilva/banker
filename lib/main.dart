@@ -1,6 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  String databasePath = join(await getDatabasesPath(), 'db.sqlite3');
+  final database = openDatabase(databasePath, onCreate: (db, version) {
+    return db.execute(
+      'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)',
+    );
+  }, version: 1);
   runApp(const MyApp());
 }
 
